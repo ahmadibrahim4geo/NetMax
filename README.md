@@ -27,8 +27,8 @@ Tracks real-time internet usage for the whole system and per application, stores
 ### 1. Clone or extract the project
 
 ```
-git clone https://github.com/yourname/netscope.git
-cd netscope
+git clone https://github.com/ahmadibrahim4geo/NetMax.git
+cd NetMax
 ```
 
 ### 2. Create a virtual environment (recommended)
@@ -101,6 +101,12 @@ netscope/
 
 ---
 
+## Privacy and generated files
+
+Net Max stores local network activity history and executable paths in a SQLite database at `%APPDATA%\\Net Max\\netscope.db` (created automatically on first launch). The application does **not** need a prepopulated database in the source repository. Generated database files (including SQLite WAL/SHM), usage reports, caches, logs and local settings must not be committed or attached to public issues. Check screenshots and exported reports before sharing them. Existing git history can retain data even after removing files from the current branch.
+
+**Measurement limitation:** `psutil.Process.io_counters().read_bytes/write_bytes` measure process **disk I/O**, not network bytes. The current per-application traffic values should **not** be interpreted as accurate per-process network usage, including when running as Administrator. Total adapter/network counters use `psutil.net_io_counters()`. An accurate per-process network meter would need a separate supported collection mechanism and Windows-native validation.
+
 ## Database Schema
 
 The SQLite database (`netscope.db`) is created automatically on first run.
@@ -144,12 +150,12 @@ pyinstaller main.py --onefile --noconsole --name "Net Max" --clean
 
 ## Per-Application Traffic Accuracy
 
-NetScope uses `psutil` process I/O counters for per-app tracking.
+Net Max currently reads process disk-I/O counters as a proxy. **This does not measure per-application network traffic accurately.** See the measurement limitation above.
 
-- **Standard user:** process I/O counters may return 0 for protected processes (svchost, system, antivirus). Total NIC bandwidth is always accurate.
-- **Administrator:** most processes report real I/O bytes, improving per-app accuracy significantly.
+- **Standard user:** some process connection/metadata information may be unavailable. Aggregate adapter counters still report traffic, subject to counter reset, virtual interfaces and polling limitations.
+- **Administrator:** extra visibility does **not** turn process disk-I/O values into network-usage measurements.
 
-Right-click `Net Max.exe` → *Run as administrator* for best per-app results.
+Do not elevate solely to improve the currently unsupported per-app network attribution.
 
 ---
 
