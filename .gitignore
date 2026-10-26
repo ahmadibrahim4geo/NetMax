@@ -1,0 +1,27 @@
+# Python build and runtime artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+build/
+dist/
+*.egg-info/
+
+# Application-generated network monitoring history
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.sqlite-*
+exports/*.csv
+exports/*.xlsx
+*.log
+
+# Local secrets / settings
+.env
+.env.*
+!.env.example
+settings/*.json
+.DS_Store
+Thumbs.db
